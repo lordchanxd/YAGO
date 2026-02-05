@@ -1,0 +1,422 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: #f5f5f5;
+  color: #111;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+header {
+  background: #4f46e5;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+header .logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header .logo img {
+  width: 40px;
+  height: 40px;
+}
+
+header nav button {
+  color: #fff;
+  background: none;
+  border: none;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* MAIN */
+main {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+}
+
+.product-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 15px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.product-images {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+}
+
+.product-images img {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.3s;
+}
+
+.product-images img.active-img {
+  opacity: 1;
+  border: 2px solid #4f46e5;
+}
+
+.product-container h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #4f46e5;
+}
+
+.description {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.quantity {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.quantity input {
+  width: 60px;
+  padding: 5px;
+  margin-left: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.buttons button {
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  padding: 12px 15px;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.buttons button:hover {
+  background: #3730a3;
+}
+
+/* SEPET PANELI */
+.cart-panel {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 80%;
+  max-width: 360px;
+  height: 100%;
+  background: #fff;
+  box-shadow: -4px 0 15px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  transition: 0.4s;
+  z-index: 200;
+}
+
+.cart-panel.active {
+  right: 0;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #4f46e5;
+  color: #fff;
+}
+
+.panel-content {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.panel-footer {
+  padding: 16px;
+  border-top: 1px solid #eee;
+}
+
+.panel-footer button {
+  width: 100%;
+  padding: 14px;
+  background: #4f46e5;
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 16px;
+}
+
+/* FOOTER */
+footer {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+}
+
+footer .socials a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 5px;
+  font-size: 14px;
+}
+
+footer .socials a:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 500px) {
+  .product-images img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  header .logo h1 {
+    font-size: 18px;
+  }
+}
+
+/* ================== BUTON TASARIMLARI ================== */
+
+/* Genel buton */
+button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.25s ease;
+  font-weight: 600;
+}
+
+/* Ana aksiyon butonları (Sepete Ekle / Satın Al) */
+.actions button,
+#addToCart,
+#buyNow {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: #fff;
+  padding: 14px 18px;
+  border-radius: 14px;
+  font-size: 16px;
+  width: 100%;
+  box-shadow: 0 8px 18px rgba(79,70,229,0.35);
+}
+
+.actions button:hover,
+#addToCart:hover,
+#buyNow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(79,70,229,0.45);
+}
+
+/* Sepet paneli ana buton */
+#panelFooter button,
+#goCheckout {
+  background: #4f46e5;
+  color: #fff;
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+#panelFooter button:hover,
+#goCheckout:hover {
+  background: #3730a3;
+}
+
+/* + - ❌ ikon butonları */
+#panelContent button {
+  background: #f1f1f1;
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin: 4px;
+}
+
+#panelContent button:hover {
+  background: #e0e0e0;
+}
+
+/* Ürünü kaldır (kırmızı vurgulu) */
+#panelContent button:last-of-type {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+#panelContent button:last-of-type:hover {
+  background: #fecaca;
+}
+
+/* Kapat butonu */
+#closeCart {
+  background: transparent;
+  color: #666;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+#closeCart:hover {
+  color: #111;
+}
+
+/* Mobil dokunma hissi */
+button:active {
+  transform: scale(0.96);
+}
+
+/* ================== MOBİL DOKUNMA ALANI ================== */
+@media (max-width: 480px) {
+  button {
+    min-height: 44px; /* Apple touch guideline */
+  }
+}
+
+/* ================== ÖDEME EKRANI TASARIM ================== */
+
+/* Ödeme panel başlığı */
+#panelTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #111;
+  text-align: center;
+}
+
+/* Form etiketleri */
+#panelContent label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #444;
+}
+
+/* Input ve textarea */
+#panelContent input,
+#panelContent textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 15px;
+  background: #fafafa;
+  transition: 0.2s;
+}
+
+/* Focus efekti */
+#panelContent input:focus,
+#panelContent textarea:focus {
+  outline: none;
+  border-color: #4f46e5;
+  background: #fff;
+}
+
+/* SKT + CVV satırı */
+#panelContent > div {
+  margin-top: 10px;
+}
+
+/* Toplam tutar */
+#panelContent p strong {
+  font-size: 16px;
+  color: #4f46e5;
+}
+
+/* Güvenlik yazısı */
+#panelContent small {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+  text-align: center;
+}
+
+/* ================== ÖDEME BUTONU ================== */
+#panelFooter button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px;
+  border-radius: 16px;
+  font-size: 17px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  color: #fff;
+  box-shadow: 0 10px 22px rgba(34,197,94,0.35);
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+#panelFooter button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(34,197,94,0.45);
+}
+
+/* Active (basma hissi) */
+#panelFooter button:active {
+  transform: scale(0.97);
+}
+
+/* ================== MOBİL İNCE AYAR ================== */
+@media (max-width: 480px) {
+  #panelTitle {
+    font-size: 18px;
+  }
+
+  #panelFooter button {
+    font-size: 16px;
+    padding: 14px;
+  }
+}

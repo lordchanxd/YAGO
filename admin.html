@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>YAGO Admin</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <script>
+  if (localStorage.getItem("adminAuth") !== "true") {
+    window.location.href = "admin-login.html";
+  }
+</script>
+
+
+<script>
+function logout(){
+  localStorage.removeItem("adminAuth");
+  window.location.href = "admin-login.html";
+}
+</script>
+
+
+<h2>Siparişler</h2>
+<table id="orders"></table>
+
+<script src="admin.js"></script>
+<button onclick="logout()">Çıkış Yap</button>
+</body>
+</html>

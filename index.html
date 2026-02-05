@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YAGO - Dropshipping</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      
+      <h1>YAGO</h1>
+    </div>
+    <nav>
+      <button id="cartToggle">Sepetim 🛒</button>
+    </nav>
+  </header>
+
+  <!-- ÜRÜN BÖLÜMÜ -->
+  <main>
+    <section class="product-section" id="products">
+      <div class="product-container">
+        <div class="product-images">
+          <img src="https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcTvYbO198x7Ypg0siYC6_PiX1SpPs5ihziKfcy2iS_07_AKtDynkB0y8PMb1QU3ZDon-WlTaNH5ZCsc94yO_4oTGTwy3XfQGixpeJxaBXftnVUxInBVY9j3jw" alt="Hoparlör 1" class="active-img">
+          <img src="https://cdn03.ciceksepeti.com/cicek/kcs60078178-1/L/tt-su-gecirmez-banyoda-kullanilabilen-vakumlu-bluetooth-hoparlor-kcm30641048-4-3cd47a1d816a42b1afec42c69fffaa74.jpg" alt="Hoparlör 2">
+          <img src="https://cdn03.ciceksepeti.com/cicek/kcm30641048-1/L/tt-su-gecirmez-banyoda-kullanilabilen-vakumlu-bluetooth-hoparlor-kcm30641048-3-7c0ebca53b96460aa3fc25d237208c7d.jpg" alt="Hoparlör 3">
+        </div>
+        <h2>Su Geçirmez Bluetooth Hoparlör</h2>
+        <p class="price">500 TL</p>
+        <p class="description">
+          Bu su geçirmez Bluetooth hoparlör, banyoda veya dış mekanda rahatça kullanılabilir. Vakumlu tasarımı sayesinde düz yüzeylere kolayca tutunur. Yüksek ses kalitesi ile müziğin keyfini çıkarın!
+        </p>
+        <div class="quantity">
+          <label for="qty">Adet:</label>
+          <input type="number" id="qty" value="1" min="1">
+        </div>
+        <div class="buttons">
+          <button id="addToCart">Sepete Ekle</button>
+          <button id="buyNow">Satın Al</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- SAĞ PANEL -->
+  <aside id="cartPanel" class="cart-panel">
+    <div class="panel-header">
+      <h2 id="panelTitle">Sepetim</h2>
+      <button id="closeCart">✕</button>
+    </div>
+    <div class="panel-content" id="panelContent">
+      <p>Sepetiniz boş.</p>
+    </div>
+    <div class="panel-footer" id="panelFooter"></div>
+  </aside>
+
+  <footer>
+    <p>© 2026 YAGO. Tüm hakları saklıdır.</p>
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">Twitter</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
