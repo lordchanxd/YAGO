@@ -94,8 +94,7 @@
     <section class="product-section" id="products">
       <div class="product-container">
         <div class="product-images">
-          <img src="https://cdn03.ciceksepeti.com/cicek/kcs60078178-1/L/tt-su-gecirmez-banyoda-kullanilabilen-vakumlu-bluetooth-hoparlor-kcm30641048-4-3cd47a1d816a42b1afec42c69fffaa74.jpg">
-          
+          <img src="https://cdn03.ciceksepeti.com/cicek/kcs60078178-1/L/tt-su-gecirmez-banyoda-kullanilabilen-vakumlu-bluetooth-hoparlor-kcm30641048-4-3cd47a1d816a42b1afec42c69fffaa74.jpg" class="active-img">
         </div>
         <h2>Su Geçirmez Bluetooth Hoparlör</h2>
         <p class="price">
@@ -150,7 +149,7 @@
     const panelFooter = document.getElementById('panelFooter');
     const qtyInput = document.getElementById('qty');
     const productTitle = document.querySelector('.product-container h2');
-    const productPrice = document.querySelector('.new-price').textContent;
+    const productPriceEl = document.querySelector('.new-price');
     const productImg = document.querySelector('.product-images .active-img');
 
     cartToggle.addEventListener('click', () => {
@@ -163,21 +162,24 @@
 
     addToCart.addEventListener('click', () => {
       const qty = parseInt(qtyInput.value);
+      const price = parseInt(productPriceEl.textContent.replace(/\D/g,''));
+      const total = qty * price;
       panelContent.innerHTML = `
-        <div style="display:flex; gap:10px; align-items:center;">
+        <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
           <img src="${productImg.src}" alt="Ürün" style="width:60px; border-radius:8px;">
           <div>
             <p style="font-weight:600;">${productTitle.textContent}</p>
-            <p>${qty} x ${productPrice}</p>
+            <p>${qty} x ${price} TL = ${total} TL</p>
           </div>
         </div>
       `;
-      panelFooter.innerHTML = `<p>Toplam: ${qty * parseInt(productPrice)} TL</p>`;
+      panelFooter.innerHTML = `<p>Toplam: ${total} TL</p>`;
       cartPanel.classList.add('open');
     });
 
     buyNow.addEventListener('click', () => {
-      alert('Satın alma işlemi başlatıldı!'); 
+      const qty = parseInt(qtyInput.value);
+      window.location.href = `https://www.shopier.com/yagoshop/44059142?quantity=${qty}`;
     });
 
     // Ürün resimlerine tıklayınca aktif değişimi
