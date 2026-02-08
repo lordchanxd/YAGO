@@ -420,3 +420,23 @@ button:active {
     padding: 14px;
   }
 }
+
+.price {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  margin: 10px 0;
+}
+
+.old-price {
+  color: #999;
+  text-decoration: line-through;
+  font-size: 16px;
+}
+
+.new-price {
+  color: #0a5cff;
+  font-weight: 700;
+  font-size: 22px;
+}
