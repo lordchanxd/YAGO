@@ -61,7 +61,7 @@
     .panel-header h2 { font-size:1.2rem; }
     .panel-header button { background:none; border:none; font-size:1.3rem; cursor:pointer; }
     .panel-content { flex:1; padding:20px; overflow-y:auto; }
-    .panel-footer { padding:20px; border-top:1px solid #f1f1f1; font-weight:600; }
+    .panel-footer { padding:20px; border-top:1px solid #f1f1f1; font-weight:600; display:flex; flex-direction:column; gap:10px; }
 
     /* FOOTER */
     footer { background:#fff; padding:30px 5%; margin-top:50px; text-align:center; border-top:1px solid #e9ecef; }
@@ -164,6 +164,7 @@
       const qty = parseInt(qtyInput.value);
       const price = parseInt(productPriceEl.textContent.replace(/\D/g,''));
       const total = qty * price;
+
       panelContent.innerHTML = `
         <div style="display:flex; gap:10px; align-items:center; margin-bottom:10px;">
           <img src="${productImg.src}" alt="Ürün" style="width:60px; border-radius:8px;">
@@ -173,7 +174,27 @@
           </div>
         </div>
       `;
-      panelFooter.innerHTML = `<p>Toplam: ${total} TL</p>`;
+
+      panelFooter.innerHTML = `
+        <p>Toplam: ${total} TL</p>
+        <button id="checkoutBtn" style="
+          width:100%; 
+          padding:12px 0; 
+          border:none; 
+          border-radius:8px; 
+          background:#ff6b6b; 
+          color:#fff; 
+          font-weight:600; 
+          cursor:pointer;
+        ">Ödemeye Geç</button>
+      `;
+
+      // Ödeme butonuna tıklayınca yönlendirme
+      const checkoutBtn = document.getElementById('checkoutBtn');
+      checkoutBtn.addEventListener('click', () => {
+        window.location.href = `https://www.shopier.com/yagoshop/44059142?quantity=${qty}`;
+      });
+
       cartPanel.classList.add('open');
     });
 
