@@ -49,7 +49,8 @@ addToCartBtn.addEventListener('click', () => {
 
 buyNowBtn.addEventListener('click', () => {
   if (cart.qty === 0) cart.qty = 1;
-  window.location.href = SHOPIER_LINK; // Satın Al → Shopier
+  notifyBeforePayment();
+  window.location.href = SHOPIER_LINK;
 });
 
 // ================== SEPET PANELİ ==================
@@ -77,11 +78,17 @@ function openCart() {
     `;
 
     panelFooter.innerHTML = `
-      <button onclick="window.location.href='${SHOPIER_LINK}'">Ödemeye Geç</button>
+      <button onclick="goShopier()">Ödemeye Geç</button>
     `;
   }
 
   cartPanel.classList.add('active');
+}
+
+// ================== SHOPIER YÖNLENDİRME ==================
+function goShopier() {
+  notifyBeforePayment();
+  window.location.href = SHOPIER_LINK;
 }
 
 // ================== ADET ==================
@@ -89,7 +96,7 @@ function increaseQty() { cart.qty++; openCart(); }
 function decreaseQty() { cart.qty--; if(cart.qty<1)cart.qty=1; openCart(); }
 function removeItem() { cart.qty=0; openCart(); }
 
-// ================== ÖDEME PANELİ ==================
+// ================== ÖDEME PANELİ (BOZULMADI) ==================
 function openCheckout() {
   if (cart.qty === 0) { alert("Sepet boş!"); return; }
 
@@ -162,11 +169,29 @@ function sendTelegramMessage(message){
   fetch(`https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`,{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({chat_id: TELEGRAM_CHAT_ID,text:message})
+    body:JSON.stringify({
+      chat_id: TELEGRAM_CHAT_ID,
+      text: message
+    })
   });
 }
 
-// ================== SİPARİŞ TAMAMLAMA ==================
+// ================== SHOPIER ÖNCESİ BİLDİRİM ==================
+function notifyBeforePayment() {
+  const total = cart.qty * cart.price;
+
+  const message = `
+🛒 Shopier'e yönlendirilen sipariş
+
+Ürün: ${cart.name}
+Adet: ${cart.qty}
+Toplam: ${total} TL
+  `;
+
+  sendTelegramMessage(message);
+}
+
+// ================== SİPARİŞ TAMAMLAMA (BOZULMADI) ==================
 function completeOrder(){
   const name    = document.getElementById("name").value.trim();
   const phone   = document.getElementById("phone").value.trim();
@@ -182,7 +207,6 @@ function completeOrder(){
 
   const total = cart.qty * cart.price;
 
-  // Telegram mesajı
   const message = `
 🛒 YENİ SİPARİŞ!
 
@@ -196,11 +220,8 @@ Toplam: ${total} TL
   `;
 
   sendTelegramMessage(message);
-
-  // Shopier yönlendirme
   window.location.href = SHOPIER_LINK;
 
-  // Sepeti sıfırla
   cart.qty = 0;
   cartPanel.classList.remove('active');
 }
