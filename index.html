@@ -14,11 +14,67 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="format-detection" content="telephone=no">
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
-
   <!-- FONT -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- STILLER -->
+  <style>
+    /* RESET */
+    * { margin:0; padding:0; box-sizing:border-box; font-family: 'Inter', sans-serif; }
+    body { background:#f8f9fa; color:#212529; }
+    a { text-decoration:none; color:inherit; }
+
+    /* HEADER */
+    header { display:flex; justify-content:space-between; align-items:center; padding:20px 5%; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,0.05); position:sticky; top:0; z-index:100; }
+    header .logo h1 { font-weight:700; font-size:1.5rem; color:#111; }
+    header nav button { background:#ff6b6b; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight:600; transition:0.3s; }
+    header nav button:hover { background:#ff4757; }
+
+    /* PRODUCT SECTION */
+    .product-section { display:flex; justify-content:center; align-items:flex-start; padding:50px 5%; }
+    .product-container { background:#fff; padding:30px; border-radius:15px; box-shadow:0 4px 20px rgba(0,0,0,0.08); max-width:900px; width:100%; display:flex; flex-wrap:wrap; gap:30px; }
+    .product-images { flex:1; min-width:280px; display:flex; flex-direction:column; gap:10px; }
+    .product-images img { width:100%; border-radius:12px; cursor:pointer; transition:0.3s; }
+    .product-images img.active-img { border:3px solid #ff6b6b; }
+
+    .product-container h2 { font-size:1.8rem; margin:10px 0; font-weight:700; }
+    .price { margin:10px 0; font-size:1.3rem; }
+    .old-price { text-decoration:line-through; color:#adb5bd; margin-right:10px; }
+    .new-price { color:#ff6b6b; font-weight:700; }
+
+    .description { margin:20px 0; line-height:1.6; }
+
+    .quantity { margin-bottom:20px; display:flex; align-items:center; gap:10px; }
+    .quantity input { width:60px; padding:8px; border-radius:8px; border:1px solid #ced4da; }
+
+    .buttons { display:flex; gap:15px; flex-wrap:wrap; }
+    .buttons button { flex:1; padding:12px 0; border:none; border-radius:10px; cursor:pointer; font-weight:600; font-size:1rem; transition:0.3s; }
+    #addToCart { background:#1dd1a1; color:#fff; }
+    #addToCart:hover { background:#10ac84; }
+    #buyNow { background:#ff6b6b; color:#fff; }
+    #buyNow:hover { background:#ff4757; }
+
+    /* CART PANEL */
+    .cart-panel { position:fixed; top:0; right:-100%; width:350px; height:100%; background:#fff; box-shadow:-5px 0 20px rgba(0,0,0,0.1); transition:0.5s; z-index:200; display:flex; flex-direction:column; }
+    .cart-panel.open { right:0; }
+    .panel-header { display:flex; justify-content:space-between; align-items:center; padding:20px; border-bottom:1px solid #f1f1f1; }
+    .panel-header h2 { font-size:1.2rem; }
+    .panel-header button { background:none; border:none; font-size:1.3rem; cursor:pointer; }
+    .panel-content { flex:1; padding:20px; overflow-y:auto; }
+    .panel-footer { padding:20px; border-top:1px solid #f1f1f1; font-weight:600; }
+
+    /* FOOTER */
+    footer { background:#fff; padding:30px 5%; margin-top:50px; text-align:center; border-top:1px solid #e9ecef; }
+    footer p { margin-bottom:15px; font-size:0.9rem; color:#495057; }
+    footer .socials { display:flex; justify-content:center; gap:20px; }
+    footer .socials a { color:#495057; font-weight:600; transition:0.3s; }
+    footer .socials a:hover { color:#ff6b6b; }
+
+    @media(max-width:768px){
+      .product-section { padding:30px 5%; }
+      .product-container { flex-direction:column; }
+    }
+  </style>
 </head>
 
 <body>
@@ -26,7 +82,6 @@
   <!-- HEADER -->
   <header>
     <div class="logo">
-      
       <h1>YAGO</h1>
     </div>
     <nav>
@@ -45,9 +100,9 @@
         </div>
         <h2>Su Geçirmez Bluetooth Hoparlör</h2>
         <p class="price">
-  <span class="old-price">699 TL</span>
-  <span class="new-price">449 TL</span>
-</p>
+          <span class="old-price">699 TL</span>
+          <span class="new-price">449 TL</span>
+        </p>
 
         <p class="description">
           Bu su geçirmez Bluetooth hoparlör, banyoda veya dış mekanda rahatça kullanılabilir. Vakumlu tasarımı sayesinde düz yüzeylere kolayca tutunur. Yüksek ses kalitesi ile müziğin keyfini çıkarın!
@@ -85,6 +140,56 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- JS -->
+  <script>
+    const cartToggle = document.getElementById('cartToggle');
+    const cartPanel = document.getElementById('cartPanel');
+    const closeCart = document.getElementById('closeCart');
+    const addToCart = document.getElementById('addToCart');
+    const buyNow = document.getElementById('buyNow');
+    const panelContent = document.getElementById('panelContent');
+    const panelFooter = document.getElementById('panelFooter');
+    const qtyInput = document.getElementById('qty');
+    const productTitle = document.querySelector('.product-container h2');
+    const productPrice = document.querySelector('.new-price').textContent;
+    const productImg = document.querySelector('.product-images .active-img');
+
+    cartToggle.addEventListener('click', () => {
+      cartPanel.classList.add('open');
+    });
+
+    closeCart.addEventListener('click', () => {
+      cartPanel.classList.remove('open');
+    });
+
+    addToCart.addEventListener('click', () => {
+      const qty = parseInt(qtyInput.value);
+      panelContent.innerHTML = `
+        <div style="display:flex; gap:10px; align-items:center;">
+          <img src="${productImg.src}" alt="Ürün" style="width:60px; border-radius:8px;">
+          <div>
+            <p style="font-weight:600;">${productTitle.textContent}</p>
+            <p>${qty} x ${productPrice}</p>
+          </div>
+        </div>
+      `;
+      panelFooter.innerHTML = `<p>Toplam: ${qty * parseInt(productPrice)} TL</p>`;
+      cartPanel.classList.add('open');
+    });
+
+    buyNow.addEventListener('click', () => {
+      alert('Satın alma işlemi başlatıldı!'); 
+    });
+
+    // Ürün resimlerine tıklayınca aktif değişimi
+    const productImages = document.querySelectorAll('.product-images img');
+    productImages.forEach(img => {
+      img.addEventListener('click', () => {
+        document.querySelector('.product-images .active-img').classList.remove('active-img');
+        img.classList.add('active-img');
+        productImg.src = img.src;
+      });
+    });
+  </script>
 </body>
 </html>
