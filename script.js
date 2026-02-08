@@ -1,5 +1,5 @@
 // ================== SHOPIER LINK ==================
-const SHOPIER_LINK = "https://www.shopier.com/m/orders.php";
+const SHOPIER_LINK = "https://www.shopier.com/yagoshop/44059142";
 
 // ================== TELEGRAM AYARLARI ==================
 const TELEGRAM_TOKEN = "8572363144:AAFLFLu2b4MKvm-ARzyUAxV9GqPPcQ2xd-4";
