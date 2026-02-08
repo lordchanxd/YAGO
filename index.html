@@ -63,6 +63,14 @@
     .panel-content { flex:1; padding:20px; overflow-y:auto; }
     .panel-footer { padding:20px; border-top:1px solid #f1f1f1; font-weight:600; display:flex; flex-direction:column; gap:10px; }
 
+    /* USER REVIEWS */
+    .reviews { max-width:900px; margin:50px auto; padding:20px; background:#fff; border-radius:15px; box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+    .review { border-bottom:1px solid #f1f1f1; padding:15px 0; }
+    .review:last-child { border-bottom:none; }
+    .review p { margin-bottom:5px; }
+    .review .user { font-weight:600; color:#ff6b6b; }
+    .review .rating { color:#ffb400; }
+
     /* FOOTER */
     footer { background:#fff; padding:30px 5%; margin-top:50px; text-align:center; border-top:1px solid #e9ecef; }
     footer p { margin-bottom:15px; font-size:0.9rem; color:#495057; }
@@ -112,7 +120,35 @@
         <p class="description">
           Bu su geçirmez Bluetooth hoparlör, banyoda veya dış mekanda rahatça kullanılabilir. Vakumlu tasarımı sayesinde düz yüzeylere kolayca tutunur. Yüksek ses kalitesi ile müziğin keyfini çıkarın!
         </p>
-        
+      </div>
+    </section>
+
+    <!-- USER REVIEWS -->
+    <section class="reviews">
+      <h2 style="margin-bottom:20px;">Müşteri Yorumları</h2>
+      <div class="review">
+        <p class="user">Ayşe K. <span class="rating">★★★★★</span></p>
+        <p>Harika bir hoparlör! Ses kalitesi mükemmel ve su geçirmiyor.</p>
+      </div>
+      <div class="review">
+        <p class="user">Emre T. <span class="rating">★★★★☆</span></p>
+        <p>Beklediğimden daha iyi çıktı, banyoda kullanmak çok pratik.</p>
+      </div>
+      <div class="review">
+        <p class="user">Selin D. <span class="rating">★★★★★</span></p>
+        <p>Tasarımı çok şık, ayrıca vakumlu olması harika!</p>
+      </div>
+      <div class="review">
+        <p class="user">Murat Y. <span class="rating">★★★★☆</span></p>
+        <p>Ürün kaliteli ama biraz ağır. Genel olarak memnunum.</p>
+      </div>
+      <div class="review">
+        <p class="user">Zeynep A. <span class="rating">★★★★★</span></p>
+        <p>Kargo çok hızlı geldi, ürün tam olarak fotoğraflardaki gibi.</p>
+      </div>
+      <div class="review">
+        <p class="user">Can B. <span class="rating">★★★★★</span></p>
+        <p>Kesinlikle tavsiye ederim! Fiyatına değer bir ürün.</p>
       </div>
     </section>
   </main>
@@ -189,7 +225,6 @@
         ">Ödemeye Geç</button>
       `;
 
-      // Ödeme butonuna tıklayınca yönlendirme
       const checkoutBtn = document.getElementById('checkoutBtn');
       checkoutBtn.addEventListener('click', () => {
         window.location.href = `https://www.shopier.com/yagoshop/44059142?quantity=${qty}`;
@@ -203,7 +238,6 @@
       window.location.href = `https://www.shopier.com/yagoshop/44059142?quantity=${qty}`;
     });
 
-    // Ürün resimlerine tıklayınca aktif değişimi
     const productImages = document.querySelectorAll('.product-images img');
     productImages.forEach(img => {
       img.addEventListener('click', () => {
