@@ -62,10 +62,6 @@
     .review .rating { color:#ffb400; }
 
     footer { background:#fff; padding:30px 5%; margin-top:50px; text-align:center; border-top:1px solid #e9ecef; }
-
-    @media(max-width:768px){
-      .product-container { flex-direction:column; }
-    }
   </style>
 </head>
 
@@ -112,14 +108,17 @@
 
 <section class="reviews">
   <h2 style="margin-bottom:20px;">Müşteri Yorumları</h2>
+
   <div class="review">
     <p class="user">Elif A. <span class="rating">★★★★★</span></p>
     <p>Bulaşık yıkamak artık çok daha hızlı, gerçekten işe yarıyor.</p>
   </div>
+
   <div class="review">
     <p class="user">Mehmet D. <span class="rating">★★★★☆</span></p>
     <p>Şarjı uzun gidiyor, özellikle tencerelerde çok başarılı.</p>
   </div>
+
   <div class="review">
     <p class="user">Zeynep K. <span class="rating">★★★★★</span></p>
     <p>Elimi yormuyor, mutfakta en sevdiğim ürün oldu.</p>
@@ -132,7 +131,9 @@
     <h2>Sepetim</h2>
     <button id="closeCart">✕</button>
   </div>
-  <div class="panel-content" id="panelContent"><p>Sepetiniz boş.</p></div>
+  <div class="panel-content" id="panelContent">
+    <p>Sepetiniz boş.</p>
+  </div>
   <div class="panel-footer" id="panelFooter"></div>
 </aside>
 
@@ -141,38 +142,53 @@
 </footer>
 
 <script>
-  const cartToggle=document.getElementById('cartToggle');
-  const cartPanel=document.getElementById('cartPanel');
-  const closeCart=document.getElementById('closeCart');
-  const addToCart=document.getElementById('addToCart');
-  const buyNow=document.getElementById('buyNow');
-  const panelContent=document.getElementById('panelContent');
-  const panelFooter=document.getElementById('panelFooter');
-  const qtyInput=document.getElementById('qty');
-  const productTitle=document.querySelector('.product-container h2');
-  const productPriceEl=document.querySelector('.new-price');
-  const productImg=document.querySelector('.product-images .active-img');
+  const SHOPIER_URL = "https://www.shopier.com/yagoshop/44157126";
 
-  cartToggle.onclick=()=>cartPanel.classList.add('open');
-  closeCart.onclick=()=>cartPanel.classList.remove('open');
+  const cartToggle = document.getElementById('cartToggle');
+  const cartPanel = document.getElementById('cartPanel');
+  const closeCart = document.getElementById('closeCart');
+  const addToCart = document.getElementById('addToCart');
+  const buyNow = document.getElementById('buyNow');
+  const panelContent = document.getElementById('panelContent');
+  const panelFooter = document.getElementById('panelFooter');
+  const qtyInput = document.getElementById('qty');
+  const productTitle = document.querySelector('.product-container h2');
+  const productPriceEl = document.querySelector('.new-price');
+  const productImg = document.querySelector('.product-images .active-img');
 
-  addToCart.onclick=()=>{
-    const qty=parseInt(qtyInput.value);
-    const price=parseInt(productPriceEl.textContent.replace(/\D/g,''));
-    const total=qty*price;
-    panelContent.innerHTML=`
+  cartToggle.onclick = () => cartPanel.classList.add('open');
+  closeCart.onclick = () => cartPanel.classList.remove('open');
+
+  addToCart.onclick = () => {
+    const qty = parseInt(qtyInput.value);
+    const price = parseInt(productPriceEl.textContent.replace(/\D/g,''));
+    const total = qty * price;
+
+    panelContent.innerHTML = `
       <div style="display:flex;gap:10px;">
         <img src="${productImg.src}" style="width:60px;border-radius:8px;">
         <div>
           <p style="font-weight:600;">${productTitle.textContent}</p>
           <p>${qty} x ${price} TL = ${total} TL</p>
         </div>
-      </div>`;
-    panelFooter.innerHTML=`<p>Toplam: ${total} TL</p>`;
+      </div>
+    `;
+
+    panelFooter.innerHTML = `
+      <p>Toplam: ${total} TL</p>
+      <button onclick="window.location.href='${SHOPIER_URL}'"
+        style="padding:12px;border:none;border-radius:8px;
+        background:#ff6b6b;color:#fff;font-weight:600;cursor:pointer;">
+        Ödemeye Geç
+      </button>
+    `;
+
     cartPanel.classList.add('open');
   };
 
-  buyNow.onclick=()=>addToCart.click();
+  buyNow.onclick = () => {
+    window.location.href = SHOPIER_URL;
+  };
 </script>
 
 </body>
